@@ -3,15 +3,17 @@ import threading
 import webbrowser
 from functools import partial
 from tkinter import *
+from dotenv import load_dotenv
 
 import requests
 import spotipy
 from bs4 import BeautifulSoup
 from spotipy.oauth2 import SpotifyOAuth
 from tkcalendar import Calendar
+import os
 
-CLIENT_ID = "c4a10dee18a547d0bb67ffd9e486a71c"
-CLIENT_SECRET = "ec28b7e901514fab939b6c13cca68257"
+
+
 
 width_win = 480
 height_win = 600
@@ -47,10 +49,10 @@ def create_playlist(songs_list: list, travelled_back_to_date: str, listbox_item)
         auth_manager=SpotifyOAuth(
             scope="playlist-modify-private",
             redirect_uri="http://example.com",
-            client_id=CLIENT_ID,
-            client_secret=CLIENT_SECRET,
+            client_id=os.getenv('CLIENT_ID'),
+            client_secret=os.getenv('CLIENT_SECRET'),
             show_dialog=True,
-            cache_path="token.txt"
+            cache_path=os.getenv('token')
         )
     )
     user_id = sp.current_user()["id"]
@@ -148,6 +150,7 @@ def get_songs():
 
 
 # -----------------------------------------------UI Setup-----------------------------------------------#
+load_dotenv()
 window = Tk()
 window.title("Old is Billboard")
 window.geometry("480x600")
